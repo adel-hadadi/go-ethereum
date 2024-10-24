@@ -1,14 +1,16 @@
 package apperr
 
 import (
-	"log"
 	"net/http"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (
 	Unexpected AppErrType = iota
 	NotFound
 	BadRequest
+	Confilict
 )
 
 var (
@@ -16,12 +18,14 @@ var (
 		Unexpected: http.StatusInternalServerError,
 		NotFound:   http.StatusNotFound,
 		BadRequest: http.StatusBadRequest,
+		Confilict:  http.StatusConflict,
 	}
 
 	TypeToMessage = map[AppErrType]string{
 		Unexpected: "Something went wrong",
 		NotFound:   "Not found",
 		BadRequest: "Bad Request",
+		Confilict:  "Data Confilict",
 	}
 )
 
@@ -62,7 +66,7 @@ func (e AppErr) WithErr(err error) AppErr {
 
 func (e AppErr) Error() string {
 	if e.Err != nil {
-		log.Println(e.Err)
+		logrus.Warning(e.Err)
 	}
 
 	return e.Message
