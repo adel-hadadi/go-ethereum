@@ -1,2 +1,4 @@
 .env
 webApp
+.idea
+docker-db
